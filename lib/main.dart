@@ -201,7 +201,7 @@ class _CarScannerHomeState extends State<CarScannerHome> {
                         Icon(Icons.camera_alt),
                         SizedBox(width: 8),
                         Text(
-                          'Upload Car Photo',
+                          'Upload Car Photo!',
                           style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.w500,
