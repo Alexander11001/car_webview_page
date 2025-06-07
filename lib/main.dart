@@ -212,8 +212,160 @@ class _CarScannerHomeState extends State<CarScannerHome> {
                   ),
                 ),
 
-                // Остальной код остается таким же...
-                // (Image Preview, Loading, Results sections)
+                SizedBox(height: 20),
+
+                // Image Preview
+                if (_imageBytes != null)
+                  Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(16),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.1),
+                          blurRadius: 10,
+                          offset: Offset(0, 4),
+                        ),
+                      ],
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(16),
+                      child: Image.memory(
+                        _imageBytes!,
+                        height: 300,
+                        width: double.infinity,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
+
+                // Loading or Status
+                if (_isLoading || _statusMessage.isNotEmpty)
+                  Container(
+                    margin: EdgeInsets.only(top: 20),
+                    padding: EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(12),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.05),
+                          blurRadius: 10,
+                          offset: Offset(0, 2),
+                        ),
+                      ],
+                    ),
+                    child: Row(
+                      children: [
+                        if (_isLoading)
+                          SizedBox(
+                            width: 24,
+                            height: 24,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 3,
+                              valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
+                            ),
+                          ),
+                        if (_isLoading) SizedBox(width: 12),
+                        Expanded(
+                          child: Text(
+                            _statusMessage,
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: Color(0xFF1D1D1F),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+
+                // Results
+                if (_carInfo != null && _carInfo!.brand != 'unknown')
+                  Container(
+                    margin: EdgeInsets.only(top: 20),
+                    padding: EdgeInsets.all(20),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(16),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.05),
+                          blurRadius: 10,
+                          offset: Offset(0, 2),
+                        ),
+                      ],
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Identified Car',
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Color(0xFF1D1D1F),
+                          ),
+                        ),
+                        SizedBox(height: 16),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: _InfoCard(
+                                label: 'Brand',
+                                value: _carInfo!.brand,
+                                icon: Icons.label,
+                              ),
+                            ),
+                            SizedBox(width: 12),
+                            Expanded(
+                              child: _InfoCard(
+                                label: 'Model',
+                                value: _carInfo!.model,
+                                icon: Icons.car_repair,
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 12),
+                        _InfoCard(
+                          label: 'Confidence',
+                          value: _carInfo!.confidence.toUpperCase(),
+                          icon: Icons.analytics,
+                          color: _getConfidenceColor(_carInfo!.confidence),
+                        ),
+                        SizedBox(height: 20),
+                        SizedBox(
+                          width: double.infinity,
+                          height: 48,
+                          child: ElevatedButton(
+                            onPressed: _openOtomotoSearch,
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Color(0xFF00B746),
+                              foregroundColor: Colors.white,
+                              elevation: 0,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(Icons.search),
+                                SizedBox(width: 8),
+                                Text(
+                                  'Search on Otomoto.pl',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
               ],
             ),
           ),
